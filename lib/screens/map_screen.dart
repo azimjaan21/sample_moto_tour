@@ -31,9 +31,14 @@ class _MapScreenState extends State<MapScreen> {
               mapControllerCompleter.complete(controller);
             },
           ),
-         
+
           // DraggableScrollableSheet for the top sheet dialog
-         const MapCustomBottomSheet(),
+          MapCustomBottomSheet(
+            startLocation: 'Yunusabad 11, 46',
+            finalLocation: 'Amir Temur Avenue 108',
+            distance: '4.8 км',
+            onPressed: () {},
+          ),
         ],
       ),
     );
