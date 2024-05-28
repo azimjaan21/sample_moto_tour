@@ -17,7 +17,7 @@ class _MapScreenState extends State<MapScreen> {
 
   Distance distance = Distance();
 
-  var mapZoom = 0.0;
+  var mapZoom = 15.0;
 
   List<PolylineMapObject> drivingMapLines = [];
 
@@ -30,7 +30,6 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _initPermission().ignore();
     _getCurrentLocation();
-    _fetchCurrentLocation();
   }
 
   void _handleLocationChange(Position position) {
@@ -129,6 +128,7 @@ class _MapScreenState extends State<MapScreen> {
               });
             },
             onMapTap: (Point point) async {
+              _moveToCurrentLocation(point);
               if (!distance.startSelected) {
                 distance.finalLocation = point;
                 List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -165,6 +165,12 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                   ),
                 ),
+              PolylineMapObject(
+                mapId: const MapObjectId('route'),
+                polyline: Polyline(points: distance.getPoints()),
+                strokeColor: const Color(0xFF00FF0D),
+                strokeWidth: 4,
+              ),
             ],
           ),
           MapCustomBottomSheet(
@@ -191,7 +197,9 @@ class _MapScreenState extends State<MapScreen> {
 
   String calculateDistance(double startLatitude, double startLongitude,
       double endLatitude, double endLongitude) {
-    if (endLatitude == 0 && endLongitude == 0) return "Select";
+    if (endLatitude == 0 && endLongitude == 0) {
+      return "Select";
+    }
     double distanceInMeters = Geolocator.distanceBetween(
       distance.startLocation?.latitude ?? 0,
       distance.startLocation?.longitude ?? 0,
@@ -206,19 +214,6 @@ class _MapScreenState extends State<MapScreen> {
     if (!await LocationService().checkPermission()) {
       await LocationService().requestPermission();
     }
-    await _fetchCurrentLocation();
-  }
-
-  Future<void> _fetchCurrentLocation() async {
-    AppLatLong location;
-    const defLocation = MoscowLocation();
-    try {
-      location = await LocationService().getCurrentLocation();
-    } catch (_) {
-      location = defLocation;
-    }
-    _moveToCurrentLocation(
-        Point(latitude: location.lat, longitude: location.long));
   }
 
   Future<void> _getCurrentLocation() async {
@@ -226,8 +221,6 @@ class _MapScreenState extends State<MapScreen> {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-
-      Geolocator.getPositionStream().listen(_handleLocationChange);
 
       setState(() {
         currentLocation =
@@ -243,11 +236,11 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _moveToCurrentLocation(Point currentLocation) async {
     final mapController = await mapControllerCompleter.future;
     mapController.moveCamera(
-      animation: const MapAnimation(type: MapAnimationType.linear, duration: 1),
+      animation: const MapAnimation(type: MapAnimationType.smooth, duration: 1),
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: currentLocation,
-          zoom: 15,
+          zoom: 16.5,
         ),
       ),
     );
@@ -264,7 +257,7 @@ class _MapScreenState extends State<MapScreen> {
             icon: PlacemarkIcon.single(
               PlacemarkIconStyle(
                 image: BitmapDescriptor.fromAssetImage('assets/image.png'),
-                scale: 0.1,
+                scale: 0.3,
               ),
             ),
           ),
