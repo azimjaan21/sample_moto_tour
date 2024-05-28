@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'package:geocoding/geocoding.dart';
+import 'package:sample_moto_tour/tools/colors.dart';
 import 'package:sample_moto_tour/tools/file_importer.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -55,6 +56,7 @@ class _MapScreenState extends State<MapScreen> {
           Padding(
             padding: EdgeInsets.only(right: 15),
             child: CircleAvatar(
+              foregroundColor: Colors.amber,
               radius: 30,
               backgroundImage: AssetImage('assets/user.jpg'),
             ),
@@ -62,7 +64,6 @@ class _MapScreenState extends State<MapScreen> {
         ],
         leading: Card(
           margin: const EdgeInsets.all(5),
-
           shape: const CircleBorder(),
           color: Colors.black, // Background color for the Card widget
           child: Center(
@@ -75,7 +76,11 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ),
       ),
-      drawer: const Drawer(child: DrawerOptions()),
+      drawer: Drawer(
+        shape: const BeveledRectangleBorder(),
+        backgroundColor: AppColors.motoTourColor,
+        child: const DrawerOptions(),
+      ),
       body: Stack(
         children: [
           YandexMap(
@@ -129,10 +134,13 @@ class _MapScreenState extends State<MapScreen> {
                 mapId: const MapObjectId('route'),
                 polyline: Polyline(points: distance.getPoints()),
                 strokeColor: const Color(0xFF00FF0D),
-                strokeWidth: 4,
+                strokeWidth: 5,
               ),
             ],
           ),
+
+          //   ######### bottom sheet ###########
+
           MapCustomBottomSheet(
             startLocation: startStreet ?? 'Select start',
             finalLocation: finalStreet ?? 'Select final',

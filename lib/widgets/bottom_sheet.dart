@@ -84,9 +84,12 @@ class MapCustomBottomSheet extends StatelessWidget {
                               ),
                             ),
                             if (startSelected)
-                              const Icon(Icons.circle, color: Colors.amber)
+                              const Icon(Icons.api_sharp,
+                                  color: Color.fromARGB(255, 26, 255, 0))
                           ],
                         ),
+                        16.kH,
+                        const Divider(),
                         16.kH,
                         // Destination input
                         Row(
@@ -108,7 +111,7 @@ class MapCustomBottomSheet extends StatelessWidget {
                               ),
                             ),
                             if (!startSelected)
-                              const Icon(Icons.circle, color: Colors.amber)
+                              const Icon(Icons.api_sharp, color: Color.fromARGB(255, 26, 255, 0))
                           ],
                         ),
                         Padding(
