@@ -50,7 +50,7 @@ class MapCustomBottomSheet extends StatelessWidget {
                       children: [
                         // # distance #
                         Text(
-                          distance,
+                          '$distance км',
                           style: const TextStyle(
                               color: Colors.amber,
                               fontWeight: FontWeight.bold,
