@@ -2,7 +2,6 @@
 
 import 'package:geocoding/geocoding.dart';
 import 'package:sample_moto_tour/tools/file_importer.dart';
-import 'package:sample_moto_tour/widgets/custom_appbar.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class MapScreen extends StatefulWidget {
@@ -76,46 +75,7 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Drawer Header',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.message),
-              title: const Text('Messages'),
-              onTap: () {
-                // Handle drawer item tap
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.account_circle),
-              title: const Text('Profile'),
-              onTap: () {
-                // Handle drawer item tap
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                // Handle drawer item tap
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const Drawer(child: DrawerOptions()),
       body: Stack(
         children: [
           YandexMap(

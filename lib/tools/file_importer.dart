@@ -9,6 +9,8 @@ export 'package:sample_moto_tour/screens/splash_screen.dart';
 export 'dart:async';
 export 'package:sample_moto_tour/services/app_location.service.dart';
 export 'package:sample_moto_tour/widgets/bottom_sheet.dart';
+export 'package:sample_moto_tour/widgets/custom_appbar.dart';
+export 'package:sample_moto_tour/widgets/drawer_options.dart';
 
 
 
