@@ -6,19 +6,23 @@ class MapCustomBottomSheet extends StatelessWidget {
   final String finalLocation;
   final String distance;
   final Function() onPressed;
+  final Function(int index) onSelected;
+  final bool startSelected;
   const MapCustomBottomSheet(
       {super.key,
       required this.startLocation,
       required this.finalLocation,
       required this.distance,
-      required this.onPressed});
+      required this.onPressed,
+      required this.onSelected,
+      required this.startSelected});
 
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       initialChildSize: 0.3,
-      minChildSize: 0.07,
-      maxChildSize: 0.5,
+      minChildSize: 0.05,
+      maxChildSize: 0.45,
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -29,6 +33,7 @@ class MapCustomBottomSheet extends StatelessWidget {
             ),
           ),
           child: ListView(
+            padding: const EdgeInsets.only(top: 20),
             controller: scrollController,
             children: [
               Column(
@@ -50,7 +55,7 @@ class MapCustomBottomSheet extends StatelessWidget {
                       children: [
                         // # distance #
                         Text(
-                          '$distance км',
+                          distance,
                           style: const TextStyle(
                               color: Colors.amber,
                               fontWeight: FontWeight.bold,
@@ -61,28 +66,49 @@ class MapCustomBottomSheet extends StatelessWidget {
                         // Location input
                         Row(
                           children: [
-                            const Icon(Icons.location_on, color: Colors.white),
+                            Icon(Icons.location_on,
+                                color: startSelected
+                                    ? Colors.amber
+                                    : Colors.white),
                             8.wH,
                             Expanded(
-                              child: Text(
-                                startLocation,
-                                style: const TextStyle(color: Colors.white),
+                              child: InkWell(
+                                autofocus: true,
+                                onTap: () {
+                                  onSelected(0);
+                                },
+                                child: Text(
+                                  startLocation,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
+                            if (startSelected)
+                              const Icon(Icons.circle, color: Colors.amber)
                           ],
                         ),
                         16.kH,
                         // Destination input
                         Row(
                           children: [
-                            const Icon(Icons.location_on, color: Colors.yellow),
+                            Icon(Icons.location_on,
+                                color: !startSelected
+                                    ? Colors.amber
+                                    : Colors.white),
                             8.wH,
                             Expanded(
-                              child: Text(
-                                finalLocation,
-                                style: const TextStyle(color: Colors.white),
+                              child: InkWell(
+                                onTap: () {
+                                  onSelected(1);
+                                },
+                                child: Text(
+                                  finalLocation,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
+                            if (!startSelected)
+                              const Icon(Icons.circle, color: Colors.amber)
                           ],
                         ),
                         Padding(
