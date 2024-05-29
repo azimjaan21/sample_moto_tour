@@ -20,7 +20,7 @@ class MapCustomBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.3,
+      initialChildSize: 0.4,
       minChildSize: 0.05,
       maxChildSize: 0.45,
       builder: (context, scrollController) {

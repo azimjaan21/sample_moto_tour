@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
+import 'dart:math';
+
 import 'package:geocoding/geocoding.dart';
-import 'package:sample_moto_tour/tools/colors.dart';
+import 'package:sample_moto_tour/database/database_helper.dart';
+import 'package:sample_moto_tour/models/ride.module.dart';
+import 'package:sample_moto_tour/screens/rides_screen.dart';
 import 'package:sample_moto_tour/tools/file_importer.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -24,6 +28,7 @@ class _MapScreenState extends State<MapScreen> {
   Point? currentLocation;
   String? startStreet;
   String? finalStreet;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -31,6 +36,37 @@ class _MapScreenState extends State<MapScreen> {
     _initPermission().ignore();
     _getCurrentLocation();
   }
+
+  ///////////////  ####  Add Rides  ####   //////////////////////
+void _saveRide() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await Future.delayed(Duration(seconds: 2));
+
+    if (startStreet != null && finalStreet != null) {
+      int waitTime = Random().nextInt(6) + 5;  // Random time between 5-10 minutes
+      Ride newRide = Ride(
+        startStreet: startStreet!,
+        finalStreet: finalStreet!,
+        waitTime: waitTime,
+        status: "waiting",
+        startTime: DateTime.now(),  // Set the start time to the current time
+      );
+      await DatabaseHelper().insertRide(newRide);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RidesScreen()),
+      );
+    }
+  }
+  ///////////////////////////////////
 
   void _handleLocationChange(Position position) {
     if (mounted) {
@@ -49,6 +85,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: CustomAppbar(
@@ -81,85 +118,87 @@ class _MapScreenState extends State<MapScreen> {
         backgroundColor: AppColors.motoTourColor,
         child: const DrawerOptions(),
       ),
-      body: Stack(
-        children: [
-          YandexMap(
-            onMapCreated: (controller) {
-              mapControllerCompleter.complete(controller);
-            },
-            onCameraPositionChanged: (cameraPosition, _, __) {
-              setState(() {
-                mapZoom = cameraPosition.zoom;
-              });
-            },
-            onMapTap: (Point point) async {
-              _moveToCurrentLocation(point);
-              if (!distance.startSelected) {
-                distance.finalLocation = point;
-                List<Placemark> placemarks = await placemarkFromCoordinates(
-                    point.latitude, point.longitude);
-                if (placemarks.isNotEmpty) {
-                  setState(() {
-                    finalStreet = placemarks[0].street;
-                  });
-                }
-              } else {
-                distance.startLocation = point;
-                List<Placemark> placemarks = await placemarkFromCoordinates(
-                    point.latitude, point.longitude);
-                if (placemarks.isNotEmpty) {
-                  setState(() {
-                    startStreet = placemarks[0].street;
-                  });
-                }
-              }
-            },
-            mapObjects: [
-              ..._getDrivingPlacemarks(context,
-                  drivingPoints: distance.getPoints()),
-              ...drivingMapLines,
-              if (currentLocation != null)
-                PlacemarkMapObject(
-                  mapId: const MapObjectId('user_location'),
-                  point: currentLocation!,
-                  icon: PlacemarkIcon.single(
-                    PlacemarkIconStyle(
-                      image:
-                          BitmapDescriptor.fromAssetImage('assets/current.png'),
-                      scale: 0.4,
+      body:  Stack(
+              children: [
+                YandexMap(
+                  onMapCreated: (controller) {
+                    mapControllerCompleter.complete(controller);
+                  },
+                  onCameraPositionChanged: (cameraPosition, _, __) {
+                    setState(() {
+                      mapZoom = cameraPosition.zoom;
+                    });
+                  },
+                  onMapTap: (Point point) async {
+                    _moveToCurrentLocation(point);
+                    if (!distance.startSelected) {
+                      distance.finalLocation = point;
+                      List<Placemark> placemarks =
+                          await placemarkFromCoordinates(
+                              point.latitude, point.longitude);
+                      if (placemarks.isNotEmpty) {
+                        setState(() {
+                          finalStreet = placemarks[0].street;
+                        });
+                      }
+                    } else {
+                      distance.startLocation = point;
+                      List<Placemark> placemarks =
+                          await placemarkFromCoordinates(
+                              point.latitude, point.longitude);
+                      if (placemarks.isNotEmpty) {
+                        setState(() {
+                          startStreet = placemarks[0].street;
+                        });
+                      }
+                    }
+                  },
+                  mapObjects: [
+                    ..._getDrivingPlacemarks(context,
+                        drivingPoints: distance.getPoints()),
+                    ...drivingMapLines,
+                    if (currentLocation != null)
+                      PlacemarkMapObject(
+                        mapId: const MapObjectId('user_location'),
+                        point: currentLocation!,
+                        icon: PlacemarkIcon.single(
+                          PlacemarkIconStyle(
+                            image: BitmapDescriptor.fromAssetImage(
+                                'assets/current.png'),
+                            scale: 0.4,
+                          ),
+                        ),
+                      ),
+                    PolylineMapObject(
+                      mapId: const MapObjectId('route'),
+                      polyline: Polyline(points: distance.getPoints()),
+                      strokeColor: const Color(0xFF00FF0D),
+                      strokeWidth: 5,
                     ),
-                  ),
+                  ],
                 ),
-              PolylineMapObject(
-                mapId: const MapObjectId('route'),
-                polyline: Polyline(points: distance.getPoints()),
-                strokeColor: const Color(0xFF00FF0D),
-                strokeWidth: 5,
-              ),
-            ],
-          ),
 
-          //   ######### bottom sheet ###########
+                //   ######### bottom sheet ###########
 
-          MapCustomBottomSheet(
-            startLocation: startStreet ?? 'Select start',
-            finalLocation: finalStreet ?? 'Select final',
-            distance: calculateDistance(
-              distance.startLocation?.latitude ?? 0,
-              distance.startLocation?.longitude ?? 0,
-              distance.finalLocation?.latitude ?? 0,
-              distance.finalLocation?.longitude ?? 0,
+                MapCustomBottomSheet(
+                  startLocation: startStreet ?? 'Select start',
+                  finalLocation: finalStreet ?? 'Select final',
+                  distance: calculateDistance(
+                    distance.startLocation?.latitude ?? 0,
+                    distance.startLocation?.longitude ?? 0,
+                    distance.finalLocation?.latitude ?? 0,
+                    distance.finalLocation?.longitude ?? 0,
+                  ),
+                  startSelected: distance.startSelected,
+                  onSelected: (int index) {
+                    setState(() {
+                      distance.startSelected = index == 0;
+                    });
+                  },
+                  onPressed: _saveRide,
+                ),
+              ],
             ),
-            startSelected: distance.startSelected,
-            onSelected: (int index) {
-              setState(() {
-                distance.startSelected = index == 0;
-              });
-            },
-            onPressed: () {},
-          ),
-        ],
-      ),
     );
   }
 

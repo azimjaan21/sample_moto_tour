@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:label="sample_moto_tour"
+        android:label="Moto Tour"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
