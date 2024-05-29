@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: myThemeData,
       home:    AuthService.auth.currentUser == null
-            ?  LoginScreen()
+            ?  const LoginScreen()
             : const MapScreen(),
     );
   }

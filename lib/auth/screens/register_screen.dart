@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:sample_moto_tour/auth/services/auth.service.dart';
 import 'package:sample_moto_tour/tools/extentions/sized_box_ext.dart';
 import 'package:sample_moto_tour/tools/file_importer.dart';
@@ -5,6 +7,8 @@ import '../widgets/custom_text_field.dart';
 import '../utils/validation.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -31,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 children: [
                 200.kH,
-                const Text('Register',  style: TextStyle(
+                const Text('Зарегистрироваться',  style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 30),),
@@ -39,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextField(
                     keyboardType: TextInputType.emailAddress,
                     icon: const Icon(Icons.email),
-                    hintText: 'Email',
+                    hintText: 'Электронная почта',
                     onChanged: (value) {
                       setState(() => email = value);
                     },
@@ -48,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextField(
                     keyboardType: TextInputType.visiblePassword,
                     icon: const Icon(Icons.key),
-                    hintText: 'Password',
+                    hintText: 'Пароль',
                     obscureText: true,
                     onChanged: (value) {
                       setState(() => password = value);
@@ -62,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Register',  style: TextStyle(color: Colors.black),),
+                        Text('Создать аккаунт',  style: TextStyle(color: Colors.black),),
                       ],
                     ),
                     onPressed: () async {
@@ -77,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         } else {
                           // Handle registration error
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Registration failed')));
+                              const SnackBar(content: Text('Registration failed')));
                         }
                       }
                     },

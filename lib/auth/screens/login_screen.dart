@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   100.kH,
                   const Text(
-                    "Log In",
+                    "Войти",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   50.kH,
                   CustomTextField(
                     keyboardType: TextInputType.emailAddress,
-                    hintText: 'Email',
+                    hintText: 'Электронная почта',
                     icon: const Icon(Icons.email),
                     onChanged: (value) {
                       setState(() => email = value);
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomTextField(
                     keyboardType: TextInputType.visiblePassword,
-                    hintText: 'Password',
+                    hintText: 'Пароль',
                     icon: const Icon(Icons.key),
                     obscureText: true,
                     onChanged: (value) {
@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                            Text(
-                            'Login',
+                            'Войти',
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -96,12 +96,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   TextButton(
-                    child: const Text('Register'),
+                    child: const Text('Зарегистрироваться'),
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RegisterScreen()));
+                              builder: (context) => const RegisterScreen()));
                     },
                   ),
                 ],

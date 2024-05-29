@@ -5,7 +5,7 @@ import 'package:sample_moto_tour/screens/rides_screen.dart';
 import 'package:sample_moto_tour/tools/extentions/sized_box_ext.dart';
 
 class DrawerOptions extends StatelessWidget {
-   DrawerOptions({Key? key}) : super(key: key);
+   DrawerOptions({super.key});
 
   final AuthService _authService = AuthService();
 
@@ -43,7 +43,7 @@ class DrawerOptions extends StatelessWidget {
                      Expanded(
                       child: Text(
                       AuthService.auth.currentUser!.email.toString(),
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
                     ),
                     const Spacer(),
@@ -72,14 +72,14 @@ class DrawerOptions extends StatelessWidget {
               );
             },
           ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text('Аккаунт'),
-            onTap: () {
-              // Handle drawer item tap
-            },
-          ),
+          // const Divider(),
+          // ListTile(
+          //   leading: const Icon(Icons.person),
+          //   title: const Text('Аккаунт'),
+          //   onTap: () {
+          //     // Handle drawer item tap
+          //   },
+          // ),
           const Divider(),
           ListTile(
             leading: const Icon(
@@ -95,12 +95,12 @@ class DrawerOptions extends StatelessWidget {
             onTap: () {
               _authService.signOut().then((_) {
                 // Navigate to the login screen after sign out
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen(),));
               }).catchError((error) {
                 // Handle sign-out errors
                 print('Error signing out: $error');
                 // Show snackbar or dialog to inform the user
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Failed to sign out. Please try again.'),
                 ));
               });
