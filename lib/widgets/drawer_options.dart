@@ -34,7 +34,7 @@ class DrawerOptions extends StatelessWidget {
                     CircleAvatar(
                       radius: 50,
                       child: Image.asset(
-                        'assets/avatar.png',
+                        'assets/user.jpg',
                       ),
                     ),
                     8.kH,

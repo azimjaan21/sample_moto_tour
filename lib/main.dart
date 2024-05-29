@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Moto Tour',
       debugShowCheckedModeBanner: false,
       theme: myThemeData,
-      home: const SplashScreen(),
+      home: const MapScreen(),
     );
   }
 }

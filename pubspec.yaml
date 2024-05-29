@@ -28,13 +28,26 @@ dependencies:
   geocoding: ^3.0.0
   flutter_launcher_icons: ^0.13.1
   intl: ^0.19.0
+  awesome_dialog: ^3.2.1
+
+  # App Spalsh Installer
+  flutter_native_splash: ^2.4.0
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#1E1E1E"
+  image: "assets/mt.png"
+  # App Spalsh Installer
 
 # App Icon Installer
-
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/mt.png"
+# App Icon Installer
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +65,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/mt.png
     - assets/fonts/
 
 ## 
