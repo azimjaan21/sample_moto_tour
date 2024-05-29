@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:sample_moto_tour/database/database_helper.dart';
 import 'package:sample_moto_tour/models/ride.module.dart';
@@ -28,7 +29,6 @@ class _MapScreenState extends State<MapScreen> {
   Point? currentLocation;
   String? startStreet;
   String? finalStreet;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -38,27 +38,41 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   ///////////////  ####  Add Rides  ####   //////////////////////
-void _saveRide() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 2));
+  void _saveRide() async {
+    await Future.delayed(const Duration(seconds: 1));
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      borderSide: const BorderSide(
+        color: Colors.green,
+        width: 2,
+      ),
+      width: 280,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(2),
+      ),
+      dismissOnTouchOutside: true,
+      dismissOnBackKeyPress: false,
+      onDismissCallback: (type) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Dismissed by $type'),
+          ),
+        );
+      },
+    );
 
     if (startStreet != null && finalStreet != null) {
-      int waitTime = Random().nextInt(6) + 5;  // Random time between 5-10 minutes
+      int waitTime =
+          Random().nextInt(6) + 5; // Random time between 5-10 minutes
       Ride newRide = Ride(
         startStreet: startStreet!,
         finalStreet: finalStreet!,
         waitTime: waitTime,
         status: "waiting",
-        startTime: DateTime.now(),  // Set the start time to the current time
+        startTime: DateTime.now(), // Set the start time to the current time
       );
       await DatabaseHelper().insertRide(newRide);
-
-      setState(() {
-        _isLoading = false;
-      });
 
       Navigator.push(
         context,
@@ -104,87 +118,85 @@ void _saveRide() async {
         backgroundColor: AppColors.motoTourColor,
         child: const DrawerOptions(),
       ),
-      body:  Stack(
-              children: [
-                YandexMap(
-                  onMapCreated: (controller) {
-                    mapControllerCompleter.complete(controller);
-                  },
-                  onCameraPositionChanged: (cameraPosition, _, __) {
-                    setState(() {
-                      mapZoom = cameraPosition.zoom;
-                    });
-                  },
-                  onMapTap: (Point point) async {
-                    _moveToCurrentLocation(point);
-                    if (!distance.startSelected) {
-                      distance.finalLocation = point;
-                      List<Placemark> placemarks =
-                          await placemarkFromCoordinates(
-                              point.latitude, point.longitude);
-                      if (placemarks.isNotEmpty) {
-                        setState(() {
-                          finalStreet = placemarks[0].street;
-                        });
-                      }
-                    } else {
-                      distance.startLocation = point;
-                      List<Placemark> placemarks =
-                          await placemarkFromCoordinates(
-                              point.latitude, point.longitude);
-                      if (placemarks.isNotEmpty) {
-                        setState(() {
-                          startStreet = placemarks[0].street;
-                        });
-                      }
-                    }
-                  },
-                  mapObjects: [
-                    ..._getDrivingPlacemarks(context,
-                        drivingPoints: distance.getPoints()),
-                    ...drivingMapLines,
-                    if (currentLocation != null)
-                      PlacemarkMapObject(
-                        mapId: const MapObjectId('user_location'),
-                        point: currentLocation!,
-                        icon: PlacemarkIcon.single(
-                          PlacemarkIconStyle(
-                            image: BitmapDescriptor.fromAssetImage(
-                                'assets/current.png'),
-                            scale: 0.4,
-                          ),
-                        ),
-                      ),
-                    PolylineMapObject(
-                      mapId: const MapObjectId('route'),
-                      polyline: Polyline(points: distance.getPoints()),
-                      strokeColor: const Color(0xFF00FF0D),
-                      strokeWidth: 5,
+      body: Stack(
+        children: [
+          YandexMap(
+            onMapCreated: (controller) {
+              mapControllerCompleter.complete(controller);
+            },
+            onCameraPositionChanged: (cameraPosition, _, __) {
+              setState(() {
+                mapZoom = cameraPosition.zoom;
+              });
+            },
+            onMapTap: (Point point) async {
+              _moveToCurrentLocation(point);
+              if (!distance.startSelected) {
+                distance.finalLocation = point;
+                List<Placemark> placemarks = await placemarkFromCoordinates(
+                    point.latitude, point.longitude);
+                if (placemarks.isNotEmpty) {
+                  setState(() {
+                    finalStreet = placemarks[0].street;
+                  });
+                }
+              } else {
+                distance.startLocation = point;
+                List<Placemark> placemarks = await placemarkFromCoordinates(
+                    point.latitude, point.longitude);
+                if (placemarks.isNotEmpty) {
+                  setState(() {
+                    startStreet = placemarks[0].street;
+                  });
+                }
+              }
+            },
+            mapObjects: [
+              ..._getDrivingPlacemarks(context,
+                  drivingPoints: distance.getPoints()),
+              ...drivingMapLines,
+              if (currentLocation != null)
+                PlacemarkMapObject(
+                  mapId: const MapObjectId('user_location'),
+                  point: currentLocation!,
+                  icon: PlacemarkIcon.single(
+                    PlacemarkIconStyle(
+                      image:
+                          BitmapDescriptor.fromAssetImage('assets/current.png'),
+                      scale: 0.4,
                     ),
-                  ],
-                ),
-
-                //   ######### bottom sheet ###########
-
-                MapCustomBottomSheet(
-                  startLocation: startStreet ?? 'Откуда',
-                  finalLocation: finalStreet ?? 'Куда',
-                  distance: calculateDistance(
-                    distance.startLocation?.latitude ?? 0,
-                    distance.startLocation?.longitude ?? 0,
-                    distance.finalLocation?.latitude ?? 0,
-                    distance.finalLocation?.longitude ?? 0,
                   ),
-                  startSelected: distance.startSelected,
-                  onSelected: (int index) {
-                    setState(() {
-                      distance.startSelected = index == 0;
-                    });
-                  },
-                  onPressed: _saveRide,
                 ),
-              ],
+              PolylineMapObject(
+                mapId: const MapObjectId('route'),
+                polyline: Polyline(points: distance.getPoints()),
+                strokeColor: const Color(0xFF00FF0D),
+                strokeWidth: 5,
+              ),
+            ],
+          ),
+
+          //   ######### bottom sheet ###########
+
+          MapCustomBottomSheet(
+            startLocation: startStreet ?? 'Откуда',
+            finalLocation: finalStreet ?? 'Куда',
+            distance: calculateDistance(
+              distance.startLocation?.latitude ?? 0,
+              distance.startLocation?.longitude ?? 0,
+              distance.finalLocation?.latitude ?? 0,
+              distance.finalLocation?.longitude ?? 0,
             ),
+            startSelected: distance.startSelected,
+            onSelected: (int index) {
+              setState(() {
+                distance.startSelected = index == 0;
+              });
+            },
+            onPressed: _saveRide,
+          ),
+        ],
+      ),
     );
   }
 

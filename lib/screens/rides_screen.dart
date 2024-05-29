@@ -1,7 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'dart:async';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:sample_moto_tour/database/database_helper.dart';
 import 'package:sample_moto_tour/models/ride.module.dart';
@@ -108,11 +109,12 @@ class RideCard extends StatefulWidget {
   final Function onCancel;
   final bool isHistory;
 
-  const RideCard(
-      {super.key,
-      required this.ride,
-      required this.onCancel,
-      required this.isHistory});
+  const RideCard({
+    super.key,
+    required this.ride,
+    required this.onCancel,
+    required this.isHistory,
+  });
 
   @override
   _RideCardState createState() => _RideCardState();
@@ -163,9 +165,40 @@ class _RideCardState extends State<RideCard> {
     widget.onCancel();
   }
 
-  void _cancelRide() async {
-    await DatabaseHelper().deleteRide(widget.ride.id!);
-    widget.onCancel();
+  void _cancelRide() {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      borderSide: const BorderSide(
+        color: Colors.amber,
+        width: 2,
+      ),
+      width: 280,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(2),
+      ),
+      dismissOnTouchOutside: true,
+      dismissOnBackKeyPress: false,
+      btnCancelText: 'Да',
+      btnCancelColor: const Color(0xFFFF1100),
+      btnOkText: 'Нет',
+      btnOkColor: const Color(0xFF06C90D),
+      
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      title: 'Отменить поездку',
+      desc: 'Хотите отменить поездку на мотоцикле?',
+      btnCancelOnPress: () async {
+        await DatabaseHelper().deleteRide(widget.ride.id!);
+        widget.onCancel();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Мототур был отменен.'),
+          ),
+        );
+      },
+      btnOkOnPress: () {},
+    ).show(); // Make sure to call the show() method to display the dialog.
   }
 
   @override

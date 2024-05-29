@@ -31,16 +31,14 @@ class DrawerOptions extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 50,
-                      child: Image.asset(
-                        'assets/user.jpg',
-                      ),
+                      backgroundImage: AssetImage('assets/user.jpg'),
                     ),
                     8.kH,
                     const Expanded(
                         child: Text(
-                      'Abdul Sharif',
+                      'Azimjon Akhtamov',
                       style: TextStyle(fontWeight: FontWeight.w700),
                     )),
                     const Spacer(),
