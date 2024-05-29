@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "362137786738",
+    "project_id": "moto-tour-9a3cf",
+    "storage_bucket": "moto-tour-9a3cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362137786738:android:5eefeea9aff142d6bf65eb",
+        "android_client_info": {
+          "package_name": "com.example.sample_moto_tour"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqVNGHHf7u73Bupxfxs4VAMQU24fAqP1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

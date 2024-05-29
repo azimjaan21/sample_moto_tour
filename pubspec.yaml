@@ -32,6 +32,8 @@ dependencies:
 
   # App Spalsh Installer
   flutter_native_splash: ^2.4.0
+  firebase_auth: ^4.20.0
+  firebase_core: ^2.32.0
 
 flutter_native_splash:
   android: true

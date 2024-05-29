@@ -1,6 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:sample_moto_tour/tools/file_importer.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyDAVJ-WawK1Z-hWG8gX-VI6K7QYML4gemY",
+          authDomain: "moto-tour-9a3cf.firebaseapp.com",
+          projectId: "moto-tour-9a3cf",
+          storageBucket: "moto-tour-9a3cf.appspot.com",
+          messagingSenderId: "362137786738",
+          appId: "1:362137786738:web:9f066655f402c49fbf65eb",
+          measurementId: "G-LQKYWY3RCM"));
+
   runApp(const MyApp());
 }
 
