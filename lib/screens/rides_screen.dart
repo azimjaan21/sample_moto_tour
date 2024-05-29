@@ -5,7 +5,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sample_moto_tour/database/database_helper.dart';
 import 'package:sample_moto_tour/models/ride.module.dart';
+import 'package:sample_moto_tour/tools/extentions/sized_box_ext.dart';
 import 'package:sample_moto_tour/widgets/custom_sliver_appbar.dart';
+import 'package:intl/intl.dart';
 
 class RidesScreen extends StatefulWidget {
   const RidesScreen({super.key});
@@ -48,7 +50,7 @@ class _RidesScreenState extends State<RidesScreen> {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             const CustomSliverAppBar(
-              title: 'Rides',
+              title: 'Мотопоездки',
               imagePath: 'assets/background.jpg',
             ),
           ];
@@ -63,8 +65,8 @@ class _RidesScreenState extends State<RidesScreen> {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(
                   child: Text(_selectedIndex == 0
-                      ? 'There are no rides.'
-                      : 'No history rides available.'));
+                      ? 'Мотопоездок нет.'
+                      : 'Исторических мотопоездок нет.'));
             } else {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
@@ -86,11 +88,11 @@ class _RidesScreenState extends State<RidesScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.motorcycle_outlined),
-            label: 'Rides',
+            label: 'Мотопоездки',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'HistoryRides',
+            label: 'История мотопоездок',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -101,14 +103,16 @@ class _RidesScreenState extends State<RidesScreen> {
   }
 }
 
-
-
 class RideCard extends StatefulWidget {
   final Ride ride;
   final Function onCancel;
   final bool isHistory;
 
-  const RideCard({super.key, required this.ride, required this.onCancel, required this.isHistory});
+  const RideCard(
+      {super.key,
+      required this.ride,
+      required this.onCancel,
+      required this.isHistory});
 
   @override
   _RideCardState createState() => _RideCardState();
@@ -126,7 +130,9 @@ class _RideCardState extends State<RideCard> {
 
   void _initializeTimer() {
     _remainingTime = _calculateRemainingTime();
-    if (_remainingTime != null && _remainingTime! > 0 && widget.ride.status == "waiting") {
+    if (_remainingTime != null &&
+        _remainingTime! > 0 &&
+        widget.ride.status == "waiting") {
       _startTimer();
     }
   }
@@ -177,20 +183,53 @@ class _RideCardState extends State<RideCard> {
         int seconds = _remainingTime! % 60;
         displayTime = '$minutes:${seconds.toString().padLeft(2, '0')}';
       } else {
-        displayTime = 'Moto Bike is Here';
+        displayTime = 'Мотобайк здесь!';
       }
     } else {
-      displayTime = 'Moto Bike is Here';
+      displayTime = 'Мотобайк здесь!';
     }
+
+    String formattedStartTime =
+        DateFormat('dd-MM-yyyy  HH:mm').format(widget.ride.startTime);
 
     return Card(
       child: ListTile(
-        title: Text('${widget.ride.startStreet} to ${widget.ride.finalStreet}'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              widget.ride.startStreet,
+              overflow: TextOverflow.ellipsis, // Handle overflow
+              maxLines: 1, // Restrict to a single line
+            ),
+            const Icon(
+              Icons.keyboard_double_arrow_down,
+              color: Color(0xFF1AFF00),
+            ),
+            Text(
+              widget.ride.finalStreet,
+              overflow: TextOverflow.ellipsis, // Handle overflow
+              maxLines: 1, // Restrict to a single line
+            ),
+            10.kH,
+          ],
+        ),
         subtitle: widget.isHistory
-            ? Text('Finished: ${widget.ride.startTime.toLocal().toString()}')
-            : Text('Wait time: $displayTime'),
+            ? Text(
+                'Завершено: $formattedStartTime',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.amber, fontSize: 12.0),
+              )
+            : Text(
+                'Время ожидания: $displayTime',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.amber, fontSize: 12.0),
+              ),
         trailing: IconButton(
-          icon: const Icon(Icons.cancel),
+          icon: const Icon(
+            Icons.cancel,
+            color: Color(0xFFFF1100),
+          ),
           onPressed: _cancelRide,
         ),
       ),

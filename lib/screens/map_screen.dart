@@ -167,8 +167,8 @@ void _saveRide() async {
                 //   ######### bottom sheet ###########
 
                 MapCustomBottomSheet(
-                  startLocation: startStreet ?? 'Select start',
-                  finalLocation: finalStreet ?? 'Select final',
+                  startLocation: startStreet ?? 'Откуда',
+                  finalLocation: finalStreet ?? 'Куда',
                   distance: calculateDistance(
                     distance.startLocation?.latitude ?? 0,
                     distance.startLocation?.longitude ?? 0,
@@ -191,7 +191,7 @@ void _saveRide() async {
   String calculateDistance(double startLatitude, double startLongitude,
       double endLatitude, double endLongitude) {
     if (endLatitude == 0 && endLongitude == 0) {
-      return "Select";
+      return "Маршрут";
     }
     double distanceInMeters = Geolocator.distanceBetween(
       distance.startLocation?.latitude ?? 0,

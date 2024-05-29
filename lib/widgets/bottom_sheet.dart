@@ -85,7 +85,7 @@ class MapCustomBottomSheet extends StatelessWidget {
                             ),
                             if (startSelected)
                               const Icon(Icons.api_sharp,
-                                  color: Color.fromARGB(255, 26, 255, 0))
+                                  color: Color(0xFF1AFF00)),
                           ],
                         ),
                         16.kH,
@@ -111,12 +111,14 @@ class MapCustomBottomSheet extends StatelessWidget {
                               ),
                             ),
                             if (!startSelected)
-                              const Icon(Icons.api_sharp, color: Color.fromARGB(255, 26, 255, 0))
+                              const Icon(Icons.api_sharp,
+                                  color: Color(0xFF1AFF00)),
                           ],
                         ),
+
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 12.0, bottom: 10.0),
+                              left: 15.0, right: 15.0, top: 25.0, bottom: 10.0),
                           child: ElevatedButton(
                             onPressed: onPressed,
                             style: ElevatedButton.styleFrom(

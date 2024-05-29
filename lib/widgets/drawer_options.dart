@@ -51,7 +51,7 @@ class DrawerOptions extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: const Text('Home'),
+            title: const Text('Главный экран'),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -59,7 +59,7 @@ class DrawerOptions extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.motorcycle_outlined),
-            title: const Text('Rides'),
+            title: const Text('Мотопоездки'),
             onTap: () {
               Navigator.push(
                   context,
@@ -71,7 +71,7 @@ class DrawerOptions extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.person),
-            title: const Text('Account'),
+            title: const Text('Аккаунт'),
             onTap: () {
               // Handle drawer item tap
             },
@@ -83,7 +83,7 @@ class DrawerOptions extends StatelessWidget {
               color: Color(0xFFFF0505),
             ),
             title: const Text(
-              'Sign out',
+              'Выход',
               style: TextStyle(
                 color: Color(0xFFFF0505),
               ),
