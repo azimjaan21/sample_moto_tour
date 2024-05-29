@@ -81,6 +81,9 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+
+ 
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -90,14 +93,7 @@ class _MapScreenState extends State<MapScreen> {
       extendBodyBehindAppBar: true,
       appBar: CustomAppbar(
         actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 15),
-            child: CircleAvatar(
-              foregroundColor: Colors.amber,
-              radius: 30,
-              backgroundImage: AssetImage('assets/user.jpg'),
-            ),
-          )
+          
         ],
         leading: Card(
           margin: const EdgeInsets.all(5),
@@ -116,7 +112,7 @@ class _MapScreenState extends State<MapScreen> {
       drawer: Drawer(
         shape: const BeveledRectangleBorder(),
         backgroundColor: AppColors.motoTourColor,
-        child: const DrawerOptions(),
+        child:  DrawerOptions(),
       ),
       body: Stack(
         children: [
