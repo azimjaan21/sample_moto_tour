@@ -1,9 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sample_moto_tour/database/database_helper.dart';
 import 'package:sample_moto_tour/models/ride.module.dart';
-import 'package:sample_moto_tour/widgets/custom_sliverAppbar.dart';
+import 'package:sample_moto_tour/widgets/custom_sliver_appbar.dart';
 
 class RidesScreen extends StatefulWidget {
   const RidesScreen({super.key});
@@ -55,7 +57,7 @@ class _RidesScreenState extends State<RidesScreen> {
           future: _rides,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -106,7 +108,7 @@ class RideCard extends StatefulWidget {
   final Function onCancel;
   final bool isHistory;
 
-  RideCard({required this.ride, required this.onCancel, required this.isHistory});
+  const RideCard({super.key, required this.ride, required this.onCancel, required this.isHistory});
 
   @override
   _RideCardState createState() => _RideCardState();
@@ -137,7 +139,7 @@ class _RideCardState extends State<RideCard> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_remainingTime! > 0) {
           _remainingTime = _remainingTime! - 1;
@@ -188,7 +190,7 @@ class _RideCardState extends State<RideCard> {
             ? Text('Finished: ${widget.ride.startTime.toLocal().toString()}')
             : Text('Wait time: $displayTime'),
         trailing: IconButton(
-          icon: Icon(Icons.cancel),
+          icon: const Icon(Icons.cancel),
           onPressed: _cancelRide,
         ),
       ),

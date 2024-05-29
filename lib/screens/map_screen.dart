@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, use_build_context_synchronously, avoid_print
 
 import 'dart:math';
 
@@ -43,7 +43,7 @@ void _saveRide() async {
       _isLoading = true;
     });
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     if (startStreet != null && finalStreet != null) {
       int waitTime = Random().nextInt(6) + 5;  // Random time between 5-10 minutes
@@ -62,22 +62,8 @@ void _saveRide() async {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RidesScreen()),
+        MaterialPageRoute(builder: (context) => const RidesScreen()),
       );
-    }
-  }
-  ///////////////////////////////////
-
-  void _handleLocationChange(Position position) {
-    if (mounted) {
-      setState(() {
-        // Update the currentLocation with the new position
-        currentLocation =
-            Point(latitude: position.latitude, longitude: position.longitude);
-      });
-
-      // Move the map camera to the updated location
-      _moveToCurrentLocation(currentLocation!);
     }
   }
 
