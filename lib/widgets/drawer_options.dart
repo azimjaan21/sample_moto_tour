@@ -30,14 +30,22 @@ class DrawerOptions extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    const CircleAvatar(
-                      backgroundColor: Colors.amber,
-                      radius: 50,
-                      child: Icon(
-                        Icons.person,
-                        size: 40,
-                        color: Colors.black,
-                      ),
+                    Stack(
+                      children: [
+                        const CircleAvatar(
+                          backgroundColor: Colors.amber,
+                          radius: 50,
+                          child: Icon(
+                            Icons.person,
+                            size: 40,
+                            color: Colors.black,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.edit),
+                        ),
+                      ],
                     ),
                     8.kH,
                     Expanded(
