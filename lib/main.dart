@@ -1,6 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:sample_moto_tour/auth/screens/login_screen.dart';
-import 'package:sample_moto_tour/auth/services/auth.service.dart';
 import 'package:sample_moto_tour/tools/file_importer.dart';
 
 void main() async {
@@ -15,13 +12,11 @@ void main() async {
           appId: "1:362137786738:web:9f066655f402c49fbf65eb",
           measurementId: "G-LQKYWY3RCM"));
 
-  runApp( const MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   const MyApp({super.key});
-
-
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +24,9 @@ class MyApp extends StatelessWidget {
       title: 'Moto Tour',
       debugShowCheckedModeBanner: false,
       theme: myThemeData,
-      home:    AuthService.auth.currentUser == null
-            ?  const LoginScreen()
-            : const MapScreen(),
+      home: AuthService.auth.currentUser == null
+          ? const LoginScreen()
+          : const MapScreen(),
     );
   }
 }

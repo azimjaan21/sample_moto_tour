@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:sample_moto_tour/auth/screens/login_screen.dart';
-import 'package:sample_moto_tour/auth/services/auth.service.dart';
-import 'package:sample_moto_tour/screens/rides_screen.dart';
-import 'package:sample_moto_tour/tools/extentions/sized_box_ext.dart';
+import 'package:sample_moto_tour/tools/file_importer.dart';
 
 class DrawerOptions extends StatelessWidget {
-   DrawerOptions({super.key});
+  DrawerOptions({super.key});
 
   final AuthService _authService = AuthService();
 
@@ -37,12 +33,16 @@ class DrawerOptions extends StatelessWidget {
                     const CircleAvatar(
                       backgroundColor: Colors.amber,
                       radius: 50,
-                      child: Icon(Icons.person, size: 40, color: Colors.black,),
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Colors.black,
+                      ),
                     ),
                     8.kH,
-                     Expanded(
+                    Expanded(
                       child: Text(
-                      AuthService.auth.currentUser!.email.toString(),
+                        AuthService.auth.currentUser!.email.toString(),
                         style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -95,7 +95,11 @@ class DrawerOptions extends StatelessWidget {
             onTap: () {
               _authService.signOut().then((_) {
                 // Navigate to the login screen after sign out
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen(),));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ));
               }).catchError((error) {
                 // Handle sign-out errors
                 print('Error signing out: $error');

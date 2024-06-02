@@ -1,12 +1,5 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings, use_build_context_synchronously, avoid_print
 
-import 'dart:math';
-
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:sample_moto_tour/database/database_helper.dart';
-import 'package:sample_moto_tour/models/ride.module.dart';
-import 'package:sample_moto_tour/screens/rides_screen.dart';
 import 'package:sample_moto_tour/tools/file_importer.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -81,9 +74,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-
- 
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -92,9 +82,7 @@ class _MapScreenState extends State<MapScreen> {
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: CustomAppbar(
-        actions: const [
-          
-        ],
+        actions: const [],
         leading: Card(
           margin: const EdgeInsets.all(5),
           shape: const CircleBorder(),
@@ -112,7 +100,7 @@ class _MapScreenState extends State<MapScreen> {
       drawer: Drawer(
         shape: const BeveledRectangleBorder(),
         backgroundColor: AppColors.motoTourColor,
-        child:  DrawerOptions(),
+        child: DrawerOptions(),
       ),
       body: Stack(
         children: [
