@@ -3,7 +3,7 @@ Moto Tour - Flutter App with Yandex Map Integration
 Overview
 "Moto Tour" is a dynamic and user-friendly mobile application developed using Flutter, designed to enhance the motorcycle touring experience. This app leverages the powerful capabilities of the Yandex Map API to provide seamless route planning and navigation from point A to point B. Whether you're planning a cross-country adventure or a short scenic ride, Moto Tour is your perfect companion on the road.
 
-Freelance Project on Kwork
+Freelance Project on Kwork >>>  my account:  https://kwork.com/user/azimjaan21  <<<
 
 This application was developed for a client on the Kwork platform, showcasing my ability to deliver high-quality, client-specific solutions in a freelance setting. Please note that the code presented here is an early version of the project and does not contain the final or primary version, respecting my client's privacy and confidentiality agreements.
 
